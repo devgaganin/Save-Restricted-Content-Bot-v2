@@ -189,7 +189,16 @@ async def batch_link(_, message):
         await message.reply("Freemium service is currently not available. Upgrade to premium for access.")
         return
 
-    max_batch_size = FREEMIUM_LIMIT if freecheck == 1 else PREMIUM_LIMIT
+    #max_batch_size = FREEMIUM_LIMIT if freecheck == 1 else PREMIUM_LIMIT
+
+###### THIS WILL NOW ADD + 20 TO THE FREEMIUM LIMIT AFTER /token VERIFICATION AS WRITTEN ON shrink.py #########
+    if freecheck == 1:
+        if await is_user_verified(user_id):
+            max_batch_size = FREEMIUM_LIMIT + 20
+        else:
+            max_batch_size = FREEMIUM_LIMIT
+    else:
+        max_batch_size = PREMIUM_LIMIT
 
     # Start link input
     for attempt in range(3):
